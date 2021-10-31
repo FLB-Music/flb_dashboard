@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="flex align_start">
+      <div class="mr10">
+        <div class="sub_fil flex justify_between align_start pa10">
+          <sub-totals />
+          <filter-title />
+        </div>
+        <stats-table class="ma10" />
+      </div>
+      <filters />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import SubTotals from "./components/SubTotals.vue";
+import StatsTable from "./components/StatsTable.vue";
+import FilterTitle from "./components/FilterTitle.vue";
+import Filters from "./components/Filters.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    SubTotals,
+    StatsTable,
+    FilterTitle,
+    Filters
   }
-}
+};
 </script>
 
-<style>
+<style lang="scss">
+@import url("./assets/styles/global.css");
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  background: white;
+  height: 100%;
+  padding: 20px;
+}
+@media (max-width: 800px) and (max-width: 650px) {
+  .sub_fil {
+    flex-direction: column-reverse;
+  }
 }
 </style>
