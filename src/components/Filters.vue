@@ -14,10 +14,9 @@
         alt="close filter"
       />
     </div>
+    <h4>Today</h4>
     <h4>Yesterday</h4>
     <h4>This Week</h4>
-    <h4>This Month</h4>
-    <h4>This Month</h4>
     <h4>This Month</h4>
   </div>
 </template>
@@ -52,6 +51,9 @@ export default {
     text-align: center;
     letter-spacing: 0.1rem;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
       filter: invert(1);
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="filterTitle">
     <img src="../assets/arrowleft.svg" />
-    <h2>Today</h2>
+    <h2>All Time</h2>
     <img src="../assets/arrowrigtht.svg" />
   </div>
 </template>

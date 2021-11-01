@@ -2,20 +2,29 @@
   <div class="subtotals">
     <div class="sub">
       <div class="circle"></div>
-      <h3>5 Users</h3>
-    </div>
-    <div class="sub">
-      <div class="circle"></div>
-      <h3>0 Total Users</h3>
+      <h3>{{ stats.length }} Users</h3>
     </div>
     <div class="sub">
       <div class="circle no-line"></div>
-      <h3>15 Launches</h3>
+      <h3>
+        {{
+          stats
+            .map(stat => stat.app_launches.length)
+            .reduce((acc, val) => acc + val, 0)
+        }}
+        Launches
+      </h3>
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  props: {
+    stats: Array
+  }
+};
+</script>
 
 <style lang="scss">
 .subtotals {

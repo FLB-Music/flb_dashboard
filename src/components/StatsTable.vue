@@ -7,17 +7,11 @@
         <th>Operatin System</th>
         <th>Time Zone</th>
       </tr>
-      <tr>
-        <td>1750Medion</td>
-        <td>1</td>
-        <td>Windows NT</td>
-        <td>GMT+0200 (Central European Summer Time)</td>
-      </tr>
-      <tr>
-        <td>24726anythingyoucantypeUs</td>
-        <td>3</td>
-        <td>Linux</td>
-        <td>GMT-0700 (Pacific Daylight Time)</td>
+      <tr v-for="userStat in stats" :key="userStat.id">
+        <td>{{ userStat.id }}</td>
+        <td>{{ userStat.app_launches.length }}</td>
+        <td>{{ userStat.os_type }}</td>
+        <td>{{ userStat.app_launches[0] }}</td>
       </tr>
     </table>
 
@@ -26,23 +20,28 @@
         <th>User ID</th>
         <th>Launches</th>
       </tr>
-      <tr>
-        <td>1750Medion</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <td>24726anythingyoucantypeUs</td>
-        <td>3</td>
+      <tr v-for="userStat in stats" :key="userStat.id">
+        <td>{{ userStat.id }}</td>
+        <td>{{ userStat.app_launches.length }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    stats: Array
+  }
+};
 </script>
 
 <style lang="scss">
+.StatsTable {
+  height: 62%;
+  overflow: hidden;
+  overflow-y: scroll;
+}
 table,
 th,
 td {
@@ -50,6 +49,16 @@ td {
   border-collapse: collapse;
   padding: 5px;
   font-weight: 300;
+}
+tr {
+  background: white;
+  cursor: pointer;
+  &:hover {
+    filter: invert(1);
+    td {
+      border: 2px solid white;
+    }
+  }
 }
 .for_mobile {
   display: none;
