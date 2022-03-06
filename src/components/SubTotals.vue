@@ -22,7 +22,10 @@
 export default {
   props: {
     stats: Array
-  }
+  },
+  mounted() {
+    console.log("=================")
+  },
 };
 </script>
 

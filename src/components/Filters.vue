@@ -43,6 +43,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   background: white;
+  display: none;
   h4 {
     border: 2px solid black;
     padding: 10px;
@@ -59,7 +60,11 @@ export default {
     }
   }
   .filter_toggles {
+    background: white;
     display: none;
+    padding: 2px;
+    border-radius: 10px;
+    cursor: pointer;
   }
 }
 
@@ -105,7 +110,6 @@ export default {
       top: -50px;
       /* transform: translate(-50%, 0%); */
       img {
-        position: absolute;
         width: 30px;
       }
     }

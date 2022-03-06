@@ -6,16 +6,25 @@
       :msg="adminResponse.error"
       v-on:adminKey="key => (ADMIN_KEY = key)"
     />
-    <div class="wrapper flex align_start">
-      <div class="wrapper m10">
-        <div class="sub_fil flex justify_between align_start pa10">
-          <sub-totals :stats="stats" />
-          <filter-title />
+    <div class="paper_wrap">
+      <div class="wrapper flex align_start">
+        <div class="wrapper m10">
+          <div class="sub_fil flex justify_between align_start pa10">
+            <sub-totals :stats="stats" />
+            <filter-title />
+          </div>
+          <stats-table @selectUser="setSelectedUser" :stats="stats" class="ma10" />
         </div>
-        <stats-table :stats="stats" class="ma10" />
+        <filters />
       </div>
-      <filters />
     </div>
+
+    <div class="paper_wrap" v-if="selectedUserDetails">
+      <div class="wrapper">
+        <selected-user :selectedUserDetails='selectedUserDetails'/>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -24,6 +33,7 @@ import SubTotals from "./components/SubTotals.vue";
 import StatsTable from "./components/StatsTable.vue";
 import FilterTitle from "./components/FilterTitle.vue";
 import Filters from "./components/Filters.vue";
+import SelectedUser from "./components/SelectedUser.vue";
 import Login from "./components/Login.vue";
 export default {
   name: "App",
@@ -37,7 +47,8 @@ export default {
         currentFilterUsers: 0,
         lifeTimeUsers: 0,
         currentFilterLaunches: 0
-      }
+      },
+      selectedUserDetails: null,
     };
   },
   watch: {
@@ -51,19 +62,28 @@ export default {
     StatsTable,
     FilterTitle,
     Filters,
-    Login
+    Login,
+    SelectedUser,
   },
   methods: {
+    setSelectedUser(data){
+      this.selectedUserDetails = data;
+     },
     async getStats() {
-      console.log("OOhhh yeea");
       const response = await fetch(
         `https://flb-server.herokuapp.com/get-stats?adminKey=${this.ADMIN_KEY}`
       );
-      console.log(response);
       if (response.status == 200) {
         this.stats = await response.json();
+        const timezoneReg = /\(.*\)/gm
+        this.stats.map(stat=>{
+         const matches = stat.app_launches[0].match(timezoneReg)
+          stat['timezone'] = matches[0].replace('(','').replace(')','')
+          stat['numberOfLaunches'] = stat.app_launches.length
+          })
         this.isLoggedIn = true;
         localStorage.setItem("adminKey", this.ADMIN_KEY);
+      console.log(this.stats);
       } else {
         this.adminResponse = await response.json();
         console.log(this.adminResponse);
@@ -84,12 +104,25 @@ export default {
 @import url("./assets/styles/global.css");
 @import url("./assets/styles/animate.css");
 #app {
-  background: white;
   height: 100vh;
-  padding: 20px;
-}
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+} 
+.paper_wrap{
+  height: 97vh;
+    background: grey;
+    padding-bottom: 1px;
+    padding-right: 1px;
+  }
 .wrapper {
+  background: white;
   height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 @media (max-width: 800px) and (max-width: 650px) {
   .sub_fil {
