@@ -6,6 +6,7 @@
         v-model="key"
         placeholder="Poor Security all the way"
         type="password"
+        @keyup:enter="$emit('adminKey', key)"
       />
       <p>{{ msg }}</p>
       <button @click="$emit('adminKey', key)">LOGIN</button>
@@ -29,7 +30,7 @@ export default {
 <style lang="scss">
 .login_wrapper {
   position: fixed;
-  z-index: 3;
+  z-index: 10;
   width: 98.5vw;
   height: 97vh;
   top: 0px;

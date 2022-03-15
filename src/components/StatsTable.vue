@@ -3,15 +3,19 @@
     <table class="for_desktop">
       <tr id="table_heading">
         <th @click="sort('id')">User ID</th>
-        <th @click="sort('numberOfLaunches')">Launches</th>
         <th @click="sort('os_type')">Operatin System</th>
         <th @click="sort('timezone')">Time Zone</th>
+        <th @click="sort('installDate')">First Launch</th>
+        <th @click="sort('lastLaunch')">Last Launch</th>
+        <th @click="sort('numberOfLaunches')">Launches</th>
       </tr>
-      <tr @click="showDetails(userStat)" v-for="userStat in sortedStats" :key="userStat.id">
+      <tr @click="showDetails(userStat)" v-for="userStat in dispStats" :key="userStat.id">
         <td>{{ userStat.id }}</td>
-        <td>{{ userStat.app_launches.length }}</td>
         <td>{{ userStat.os_type }}</td>
         <td>{{ userStat.timezone }}</td>
+        <td>{{ userStat.installDate.toDateString() }}</td>
+        <td>{{ userStat.lastLaunch.toDateString() }}</td>
+        <td>{{ userStat.app_launches.length }}</td>
       </tr>
     </table>
 
@@ -20,7 +24,7 @@
         <th>User ID</th>
         <th>Launches</th>
       </tr>
-      <tr v-for="userStat in stats" :key="userStat.id">
+      <tr v-for="userStat in dispStats" :key="userStat.id">
         <td>{{ userStat.id }}</td>
         <td>{{ userStat.numberOfLaunches}}</td>
       </tr>
@@ -35,41 +39,48 @@ export default {
   },
   data(){return{
       sortField:'numberOfLaunches',
-      reverse: false
+      reverse: false,
+      dispStats:this.stats
     }},
-  computed:{
-    sortedStats(){
-        let statsToSort = this.stats
-        const compare = (a,b) => {
-          if (a[`${this.sortField}`] < b[`${this.sortField}`]) {
-            return -1;
-          }
-          if (a[`${this.sortField}`] > b[`${this.sortField}`]) {
-            return 1;
-          }
-          return 0;
-        }
-      statsToSort.sort(compare);
-      if(this.reverse){
-        return statsToSort.reverse()
-      }else{
-        return statsToSort
-      }
-     }
-  },
   methods:{
     sort(sortField){
       if(this.sortField === sortField){
-         this.reverse = true
-      }else{
-         this.sortField = sortField
+        this.dispStats = this.dispStats.reverse()
+        console.log("reverse on")
+        return
       }
+      this.sortField = sortField;
+      let statsToSort = this.stats
+      if(sortField=='installDate'){
+          this.dispStats = statsToSort.sort(function(a,b){return a.installDate.getTime() - b.installDate.getTime()});
+          return
+      }
+      if(sortField=="lastLaunch"){
+         this.dispStats = statsToSort.sort(function(a,b){return a.lastLaunch.getTime() - b.lastLaunch.getTime()});
+         return
+      }
+      const compare = (a,b) => {
+        if (a[`${sortField}`] < b[`${sortField}`]) {
+           return -1;
+        }
+        if (a[`${sortField}`] > b[`${sortField}`]) {
+          return 1;
+        }
+        return 0;
+      }
+      statsToSort.sort(compare);
+      this.dispStats = statsToSort
      },
     showDetails(data){
       this.$emit("selectUser", data);
       console.log(data)
      }   
-  }
+  },
+  mounted() {
+    setTimeout(() => {
+    this.dispStats = this.stats
+    }, 1000);
+  },
 };
 </script>
 
